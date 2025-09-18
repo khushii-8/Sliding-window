@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int totalFruit(vector<int>& fruits) {
+    int n = fruits.size();
+    int left = 0, right = 0, maxLen = 0;
+    unordered_map<int,int> basket; // stores fruit type and count
+
+    while (right < n) {
+        // add fruit at right into basket
+        basket[fruits[right]]++;
+
+        // if more than 2 fruit types, shrink from left
+        while (basket.size() > 2) {
+            basket[fruits[left]]--;
+            if (basket[fruits[left]] == 0) {
+                basket.erase(fruits[left]);
+            }
+            left++;
+        }
+
+        // update maximum window size
+        maxLen = max(maxLen, right - left + 1);
+
+        // move right forward
+        right++;
+    }
+
+    return maxLen;
+}
+
+int main() {
+    vector<int> fruits = {1,2,1,2,3};
+    cout << totalFruit(fruits) << endl; // Output: 4 (subarray [1,2,1,2])
+}
